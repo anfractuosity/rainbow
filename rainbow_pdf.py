@@ -4,28 +4,19 @@ import math,cairo
 
 pt = 2.83465
 
-
-#ctx.show_page()
-
-
 def monitor(width,height,wres,hres,out,pattern):
 
     pixw = (width / wres)*1
     pixh = (height / hres)*1
 
-    #dwg = svgwrite.Drawing('test.svg', profile='full',size=(str(width)+'mm',str(height)+'mm'))
     surface = cairo.PDFSurface (out, width*pt, height*pt)
     ctx = cairo.Context (surface)
     ctx.set_source_rgb(1,1,1)
     ctx.rectangle(0,0,width*pt,height*pt)
     ctx.fill()
 
-    #dwg.add(dwg.line((0, 0), (10, 0), stroke=svgwrite.rgb(10, 10, 16, '%')))
-    #dwg.add(dwg.text('Test', insert=(0, 0.2), fill='red'))
-
     for y in range(int(height / pixh)):
         print(y/int(height / pixh))
-
         z = 0
         for x in range(int(width / pixh)):
             if pattern == "bayer":
