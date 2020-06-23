@@ -4,10 +4,10 @@ import math,cairo
 
 pt = 2.83465
 
-def monitor(width,height,wres,hres,out,pattern):
+def monitor(width,height,wres,hres,out,pattern,scale):
 
-    pixw = (width / wres)*1
-    pixh = (height / hres)*1
+    pixw = (width / wres)*scale
+    pixh = (height / hres)*scale
 
     surface = cairo.PDFSurface (out, width*pt, height*pt)
     ctx = cairo.Context (surface)
@@ -18,7 +18,7 @@ def monitor(width,height,wres,hres,out,pattern):
     for y in range(int(height / pixh)):
         print(y/int(height / pixh))
         z = 0
-        for x in range(int(width / pixh)):
+        for x in range(int(width / pixw)):
             if pattern == "bayer":
                 if y % 2 == 0:
                     if x % 2 == 0:
@@ -45,12 +45,12 @@ def monitor(width,height,wres,hres,out,pattern):
                     ctx.set_source_rgb(0,0,1)
                     z = 0
 
-            ctx.rectangle(x*pixw*pt, y*pixh*pt, pixw* 2.84,pixh* 2.84)
-            #ctx.rectangle(x*pixw*pt, y*pixh*pt, pixw*pt,pixh*pt)
+            ctx.rectangle(x*pixw*pt,y*pixh*pt,pixw*round(pt,2),pixh*round(pt,2))
+            #ctx.rectangle(x*pixw*pt,y*pixh*pt,pixw*pt,pixh*pt)
             ctx.fill()
 
     ctx.show_page()
 
-monitor(433.1,324.8,2048,1536,"bayer.pdf","bayer")
-monitor(433.1,324.8,2048,1536,"rgb.pdf","rgb")
+monitor(433.1,324.8,2048,1536,"bayer.pdf","bayer",4)
+monitor(433.1,324.8,2048,1536,"rgb.pdf","rgb",4)
 
