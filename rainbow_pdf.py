@@ -51,6 +51,8 @@ def monitor(width,height,wres,hres,out,pattern,scale):
 
     ctx.show_page()
 
-monitor(433.1,324.8,2048,1536,"bayer.pdf","bayer",4)
-monitor(433.1,324.8,2048,1536,"rgb.pdf","rgb",4)
+monitor(433.1,324.8,2048,1536,"bayer_1.pdf","bayer",1)
+monitor(433.1,324.8,2048,1536,"bayer_2.pdf","bayer",2)
+monitor(433.1,324.8,2048,1536,"bayer_4.pdf","bayer",4)
+#monitor(433.1,324.8,2048,1536,"rgb_4.pdf","rgb",4)
 
