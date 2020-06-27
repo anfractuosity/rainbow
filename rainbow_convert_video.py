@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import os
 import cv2
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
 
@@ -7,6 +8,11 @@ cap = cv2.VideoCapture("trailer.mkv")
 WIDTH=2048
 HEIGHT=1536
 scale=2
+
+try:
+    os.remove('out.txt')
+except FileNotFoundError:
+    ok = 1
 
 frames = open('out.txt', 'a')
 img = Image.new('RGB', (WIDTH, HEIGHT), color = 'black')
@@ -27,19 +33,20 @@ while(True):
     for y in range(0,int(HEIGHT/scale),2):
         for x in range(0,int(WIDTH/scale),2):
             b,g,r = orig[y,x]
-            tmp = [r,g,b]
-            draw.rectangle(((x+0)*scale ,(y+0)*scale,((x+0)*scale)+scale,((y+0)*scale)+scale), fill=(tmp[2],tmp[2],tmp[2]),outline=None,width=0)
-            draw.rectangle(((x+1)*scale ,(y+0)*scale,((x+1)*scale)+scale,((y+0)*scale)+scale), fill=(tmp[1],tmp[1],tmp[1]),outline=None,width=0)
-            draw.rectangle(((x+0)*scale ,(y+1)*scale,((x+0)*scale)+scale,((y+1)*scale)+scale), fill=(tmp[1],tmp[1],tmp[1]),outline=None,width=0)
-            draw.rectangle(((x+1)*scale ,(y+1)*scale,((x+1)*scale)+scale,((y+1)*scale)+scale), fill=(tmp[0],tmp[0],tmp[0]),outline=None,width=0)
+            draw.rectangle(((x+0)*scale ,(y+0)*scale,((x+0)*scale)+scale,((y+0)*scale)+scale), fill=(b,b,b),outline=None,width=0)
+            draw.rectangle(((x+1)*scale ,(y+0)*scale,((x+1)*scale)+scale,((y+0)*scale)+scale), fill=(g,g,g),outline=None,width=0)
+            draw.rectangle(((x+0)*scale ,(y+1)*scale,((x+0)*scale)+scale,((y+1)*scale)+scale), fill=(g,g,g),outline=None,width=0)
+            draw.rectangle(((x+1)*scale ,(y+1)*scale,((x+1)*scale)+scale,((y+1)*scale)+scale), fill=(r,r,r),outline=None,width=0)
 
     frames.write("""file frames/%d.png\nduration %f\n""" % (counter,1/24))
     img.save("""frames/%d.png""" % counter)
 
+    if counter > 24*1:
+        break
+
     counter += 1
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+frames.close()
+# Should be Python library for this?
+os.system("ffmpeg -f concat -i out.txt -framerate 24 -c:v libx264 out.mkv")
 
-    if counter > 24*60:
-        break
