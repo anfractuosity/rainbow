@@ -61,6 +61,8 @@ def process(jpg):
 
     if len(pos) == 101:
         print("Found all micrometer lines, length is: ",pos[-1] - pos[0]," pixels")
+        diffs = np.diff(pos) 
+        print("Differences:  max",np.max(diffs)," min",np.min(diffs)," mean",np.mean(diffs))
 
     plt.scatter(pos, yaxis)
     plt.imshow(micrometer)
